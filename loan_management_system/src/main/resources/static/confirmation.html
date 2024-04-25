@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay EMI</title>
+    <style>
+       table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        body {
+            background-color: palevioletred;
+        }
+        
+        .payEmiLabel {
+            float: right;
+            margin-top: 1px;
+            margin-right: 1px;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Pay EMI</h2>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get loanNumber and monthlyPayment from query parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const loanNumber = urlParams.get('loanNumber');
+            const monthlyPayment = urlParams.get('monthlyPayment');
+
+            // Make a PUT request to the payment endpoint
+            fetch(`/update/${monthlyPayment}/${loanNumber}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    loanNumber: loanNumber,
+                    monthlyPayment: monthlyPayment
+                }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch payment details');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Display the payment details
+                    displayUserDetails(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching payment details:', error);
+                    // Handle the error, e.g., display an error message
+                });
+        });
+
+        function displayUserDetails(data) {
+            const responseContainer = document.createElement('div');
+            responseContainer.className = 'response-container';
+
+           
+            const loanTable = createTable(data, ['homeLoanNumber', 'loanType', 'nomineeDetails', 'totalLoanamount', 'montlyPayment', 'loanTenure', 'currentRateofInterest', 'principalOutstandingAmount', 'outstandingEMIcount']);
+
+            
+            const userTable = createTable(data.user, ['userName', 'mobileNumber', 'address', 'salary', 'age']);
+
+            
+            responseContainer.appendChild(loanTable);
+            responseContainer.appendChild(userTable);
+            
+           
+            document.body.appendChild(responseContainer);
+        }
+
+        function createTable(data, keys) {
+            const table = document.createElement('table');
+
+          
+            if (data && typeof data === 'object') {
+                
+                for (const key of keys) {
+                    const row = document.createElement('tr');
+                    const cell1 = document.createElement('th');
+                    const cell2 = document.createElement('td');
+                    cell1.textContent = key;
+                    cell2.textContent = data[key] || ''; 
+                    row.appendChild(cell1);
+                    row.appendChild(cell2);
+                    table.appendChild(row);
+                }
+            }
+
+            return table;
+        }
+    </script>
+</body>
+</html>

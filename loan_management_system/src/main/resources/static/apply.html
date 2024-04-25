@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Application Form</title>
+    <style>
+        body {
+			
+			
+
+            
+            background-color:rgb(128, 255, 255);
+            background-position: -400px 0px;
+            
+            
+        }
+        div.main{
+			width: 400px;
+			margin:30px auto 0px auto;
+		}
+        
+        h2 {
+            text-align: center;
+            padding: 20px;
+            font-family: sans-serif;
+        }
+        div.register{
+			background-color: bisque;
+			width: 500px;
+			font-size: 18px;
+			border-radius: 10px;
+			border: 1 px solid rgba(255,255,255,0.3);
+			box-shadow: 2px 2px 2px 15px
+			rgba(0,0,0,0,5);
+			color:#fff;
+		}
+		form#loanForm{
+			margin: 50px;
+			
+		}
+		label{
+		 font-family: sans-serif;
+		 font-size: 18px;
+		 font-style: italic;
+		 color: black;	
+		}
+		input#name{
+			width:300px;
+			border:1px solid #ddd;
+			border-radius: 3px;
+			outline:0;
+			padding:7px;
+			background-color: #fff;
+			box-shadow:inset 1px 1px 5px 
+			rgba(0,0,0,0,3);
+		}
+		button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+button:hover {
+    background-color: #2980b9;
+}
+		span{
+			color: rgb(0, 0, 160);
+			}
+		
+		
+       
+    </style>
+</head>
+<body>
+	<h2>Registration For Loan</h2>
+    <div class="main">
+	<div class="register">
+	<form id="loanForm">
+        <label for="userName">userName:</label>
+        <br>
+        <input type="text" id="userName" name="userName" placeholder="Enter the UserName" required>
+        <br><br>
+        <label for="mobileNumber">mobileNumber:</label>
+        <br>
+        <input type="text" id="mobileNumber" name="mobileNumber" placeholder="Enter the mobileNumber" required>
+        <br><br>
+        <label for="address">address:</label>
+        <br>
+        <input type="text" id="address" name="address" placeholder="Enter the Address" required>
+        <br><br>
+        <label for="salary">salary:</label>
+        <br>
+        <input type="text" id="salary" name="salary" placeholder="Enter the Salary per annum" required>
+        <br><br>
+        <label for="age">age:</label>
+        <br>
+        <input type="text" id="age" name="age" placeholder="Enter the age" required>
+        <br><br>
+        <label for="role">role:</label>
+        <br>
+        <input type="radio" id="user" name="role"  value="user">
+        <span id="user">User</span>
+        <input type="radio" id="admin" name="role"  value="admin">
+        <span id="admin">Admin</span>
+        <br><br>
+        <label for="password">password:</label>
+        <br>
+        <input type="password" id="password" name="password" placeholder="Enter the password" required>
+        <br><br>
+         <label for="loanType">loanType:</label>
+        <br>
+        <select id="loanType" name="loanType">
+            <option value="Basic Home Loan">Basic Home Loan</option>
+            <option value="Home Construction Loan">Home Construction Loan</option>
+            <option value="Home Extension/Improvement Loan">Home Extension/Improvement Loan</option>
+            <option value="Home Loan Balance Transfer">Home Loan Balance Transfer</option>
+            <option value="Pradhan Mantri Awas Yojana">Pradhan Mantri Awas Yojana</option>
+            <!-- Add more options as needed -->
+        </select>
+        <br><br>
+        <label for="nomineeDetails">nomineeDetails:</label>
+        <br>
+        <input type="text" id="nomineeDetails" name="nomineeDetails" placeholder="Enter the nomineeDetails" required>
+        <br><br>
+        <label for="totalLoanamount">totalLoanamount:</label>
+        <br>
+        <input type="text" id="totalLoanamount" name="totalLoanamount" placeholder="Enter the totalLoanamount" required>
+        <br><br>
+        <label for="loanTenure">loanTenure:</label>
+        <br>
+        <input type="text" id="loanTenure" name="loanTenure" placeholder="Enter the loanTenure in months" required>
+        <br><br>
+
+        <button type="button" onclick="submitLoanApplication()">Submit</button>
+    </form>
+    </div>
+    </div>
+
+   <script>
+        function submitLoanApplication() {
+            // Gather input values
+            const userName = document.getElementById('userName').value;
+            const pasword = document.getElementById('password').value;
+            const mobileNumber = document.getElementById('mobileNumber').value;
+            const address = document.getElementById('address').value;
+            const salary = document.getElementById('salary').value;
+            const age = document.getElementById('age').value;
+            const role = document.querySelector('input[name="role"]:checked').value;
+            const loanType = document.getElementById('loanType').value;
+            const nomineeDetails = document.getElementById('nomineeDetails').value;
+            const totalLoanamount = document.getElementById('totalLoanamount').value;
+            const loanTenure = document.getElementById('loanTenure').value;
+
+  console.log('User Details:', userName, mobileNumber, address, salary, age, role);
+
+            
+           
+            const data = {
+                user: {
+                    userName: userName,
+                    mobileNumber: mobileNumber,
+                    address: address,
+                    salary: salary,
+                    age: age,
+                    role: role,
+                    password: pasword
+                    // Add other user details as needed
+                },
+                 
+                    loanType: loanType,
+                    nomineeDetails: nomineeDetails,
+                    totalLoanamount: totalLoanamount,
+                    loanTenure: loanTenure,
+                    // Add other loan details as needed
+                
+            };
+            
+          
+            fetch('/apply', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+})
+.then(response => {
+    if (response.ok) {
+        return response.json(); 
+    } else {
+        alert('Failed to submit loan application. Please try again.');
+    }
+})
+.then(responseData => {
+    // Log the response data to the console
+    console.log('Response Data:', responseData);
+
+    // Extract loan number from the responseData
+    const loanNumber = responseData?.loanNumber;
+
+   
+    
+
+    // Redirect to the confirmation page and pass the data as a single parameter
+    const queryParams = new URLSearchParams({ data: JSON.stringify(responseData) }).toString();
+    alert(`Loan application submitted successfully ! Loan Number: ${queryParams}`);
+    window.location.href = `/index.html
+    `;
+})
+.catch(error => {
+    console.error('Error submitting loan application:', error);
+    alert('Failed to submit loan application. Please try again');
+});
+        }
+    </script>
+    
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Management System</title>
+    <style>
+       body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-image: url('https://images.app.goo.gl/5Ph3TR41AxMN93WW7'); /* URL from the provided Pexels link */
+            background-size: cover;
+            background-position: center;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: blue;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .square-box-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .square-box {
+            width: 200px;
+            height: 200px;
+            background-color: rgb(0, 255, 128);
+            margin: 10px;
+            box-sizing: border-box;
+            cursor: pointer;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            text-decoration-color: black;
+            line-height: 1.5;
+            border: 2px solid rgb(128, 255, 128);
+            border-radius: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .square-box:hover {
+            color: black; /* Change text color on hover */
+        }
+
+        div {
+            color: rgb(128, 0, 255);
+        }
+
+        .offer-highlight {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: papayawhip; /* Highlight color, you can change it */
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: moveRightToLeft 5s linear infinite; /* Adjust the animation duration as needed */
+        }
+
+        .offer-highlight p {
+            margin: 10px 0;
+        }
+
+        @keyframes myAnimation {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(100px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .animated-element {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            animation: myAnimation 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Welcome to the Application for Loan Servicing.</h2>
+
+<div class="square-box-container">
+    <div class="square-box" id="applyBox">Register for Loan</div>
+    <div class="square-box" id="loanOffer">Home Loan Offers</div>
+    <div class="square-box" id="getLoanDetails">Admin Dashboard</div>
+    <div class="square-box" id="getUserDetails">User Dashboard</div>
+    <div class="square-box" id="calEMI">Calculate EMI</div>
+    <div class="square-box" id="loanTracker">Home Loan Tracker</div>
+
+    <!-- Add more square-box elements as needed -->
+</div>
+
+<div class="offer-highlight">
+    <p style="font-weight: bold; color: rgb(0, 255, 255);">Welcome to xyz home loan app. Our Loan Interest Rate is 2%.</p>
+    <p>Offers are available. Check on the offers page and apply for a loan.</p>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Add a click event listener to the "Apply" square box
+        document.getElementById('applyBox').addEventListener('click', function() {
+            applyForLoan();
+        });
+
+        // Add a click event listener to the "Loan Offers" square box
+        document.getElementById('loanOffer').addEventListener('click', function() {
+            viewLoanOffers();
+        });
+
+        document.getElementById('getLoanDetails').addEventListener('click', function() {
+            getLoanDetails();
+        });
+
+        document.getElementById('getUserDetails').addEventListener('click', function() {
+            getUserDetails();
+        });
+
+        document.getElementById('calEMI').addEventListener('click', function() {
+            calEMI();
+        });
+
+        document.getElementById('loanTracker').addEventListener('click', function() {
+            loanTracker();
+        });
+
+        function applyForLoan() {
+            window.location.href = 'apply.html';
+        }
+
+        function viewLoanOffers() {
+            window.location.href = 'offer.html';
+        }
+
+        function getLoanDetails() {
+            window.location.href = 'login.html';
+        }
+
+        function getUserDetails() {
+            window.location.href = 'user.html';
+        }
+
+        function calEMI() {
+            window.location.href = 'calEMI.html';
+        }
+
+        function loanTracker() {
+            window.location.href = 'tracker.html';
+        }
+    });
+</script>
+
+</body>
+</html>

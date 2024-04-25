@@ -1,0 +1,121 @@
+]<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Details</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        body {
+            background-color: palevioletred;
+        }
+        
+        .payEmiLabel {
+            float: right;
+            margin-top: 1px;
+            margin-right: 1px;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+   
+
+    <script>
+         document.addEventListener('DOMContentLoaded', function () {
+            // Get userName and password from query parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const userName = urlParams.get('userName');
+            const password = urlParams.get('password');
+
+           
+            fetch(`/user/${userName}/${password}`)
+                .then(response => {
+                    if (!response.ok) {
+                       
+                        alert('incorrect admin and password')
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the fetched data and update the HTML
+                    displayUserDetails(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching user and loan details:', error);
+                    alert('incorrect user and password')
+                    
+                });
+        });
+
+        function displayUserDetails(data) {
+           const responseContainer = document.createElement('div');
+            responseContainer.className = 'response-container';
+           
+            
+
+           
+            const loanTable = createTable(data, ['homeLoanNumber', 'loanType', 'nomineeDetails', 'totalLoanamount', 'montlyPayment', 'loanTenure', 'currentRateofInterest', 'principalOutstandingAmount', 'outstandingEMIcount', 'payEMI']);
+
+            
+            const userTable = createTable(data.user, ['userName', 'mobileNumber', 'address','salary','age']);
+
+           
+           responseContainer.appendChild(loanTable);
+            responseContainer.appendChild(userTable);
+             document.body.appendChild(responseContainer);
+        }
+
+        function createTable(data, keys) {
+            const table = document.createElement('table');
+
+           
+            for (const key of keys) {
+                const row = document.createElement('tr');
+                const cell1 = document.createElement('th');
+                const cell2 = document.createElement('td');
+                cell1.textContent = key;
+                if (key === 'payEMI') {
+                    // Add Pay EMI link in a separate row
+                    const payEmiRow = document.createElement('tr');
+                    const payEmiCell1 = document.createElement('th');
+                    const payEmiCell2 = document.createElement('td');
+                    const payEmiLink = document.createElement('a');
+                    payEmiLink.href = `/confirmation.html?loanNumber=${data.homeLoanNumber}&monthlyPayment=${data.montlyPayment}`;
+                    payEmiLink.textContent = 'Pay EMI';
+                    payEmiLink.className = 'payEmiLabel';
+                    payEmiCell1.textContent = 'Pay EMI:';
+                    payEmiCell2.appendChild(payEmiLink);
+                    payEmiRow.appendChild(payEmiCell1);
+                    payEmiRow.appendChild(payEmiCell2);
+                    table.appendChild(payEmiRow);
+                }
+                else {
+                    cell2.textContent = data[key];
+                    row.appendChild(cell1);
+                    row.appendChild(cell2);
+                    table.appendChild(row);
+                }
+            }
+
+            return table;
+        }
+    </script>
+</body>
+</html>

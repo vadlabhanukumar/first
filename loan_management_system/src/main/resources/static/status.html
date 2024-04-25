@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay EMI</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        body {
+            background-color: palevioletred;
+        }
+
+        .payEmiLabel {
+            float: right;
+            margin-top: 1px;
+            margin-right: 1px;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+   
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get userName and password from query parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const userName = urlParams.get('userName');
+            const password = urlParams.get('password');
+
+            // Make a GET request to the user and loan details endpoint
+            fetch(`/tracker/${userName}/${password}`)
+                .then(response => {
+                    if (!response.ok) {
+                       
+                        alert('incorrect user and password')
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the fetched data and update the HTML
+                    displayUserDetails(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching user and loan details:', error);
+                    alert('incorrect user and password')
+                    
+                });
+        });
+
+        function displayUserDetails(data) {
+			const responseContainer = document.createElement('div');
+            responseContainer.className = 'response-container';
+            loan=data.loanManagementDetails;
+            console.log(loan);
+             const loanTable = createTable(loan, ['homeLoanNumber','totalLoanamount','creationDate']);
+
+            
+            const userTable = createTable(data, ['status']);
+
+           responseContainer.appendChild(loanTable);
+            responseContainer.appendChild(userTable);
+			
+     document.body.appendChild(responseContainer);
+        }
+
+         function createTable(data, keys) {
+            const table = document.createElement('table');
+
+          
+            if (data && typeof data === 'object') {
+                
+                for (const key of keys) {
+                    const row = document.createElement('tr');
+                    const cell1 = document.createElement('th');
+                    const cell2 = document.createElement('td');
+                    cell1.textContent = key;
+                    cell2.textContent = data[key] || ''; 
+                    row.appendChild(cell1);
+                    row.appendChild(cell2);
+                    table.appendChild(row);
+                }
+            }
+
+            return table;
+        }
+    </script>
+</body>
+</html>

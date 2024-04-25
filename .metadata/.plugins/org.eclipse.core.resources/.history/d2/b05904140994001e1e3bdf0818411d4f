@@ -1,0 +1,129 @@
+package com.app.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.app.exception.UsernameNotFoundException;
+import com.app.model.LoanManagementDetails;
+import com.app.model.LoanTrackerResponse;
+import com.app.model.User;
+import com.app.service.LoanManagementService;
+
+
+/*
+ * author @venky
+ */
+
+@RestController
+public class LoanManagementController {
+	
+	@Autowired
+	private LoanManagementService loanManagementService;
+	
+   /* get user details by usrName */
+	@GetMapping("/user/{userName}")
+	public ResponseEntity<User> getUserByUserName(@PathVariable String userName) {
+		User user = loanManagementService.getUserDetails(userName);
+		return ResponseEntity.ok(user);
+	}
+    
+	/* loan detail by loan number*/
+	@GetMapping("/homeloan/{loanNumber}")
+	public LoanManagementDetails getHomeLoansByUser(@PathVariable int loanNumber) throws UsernameNotFoundException {
+		
+		LoanManagementDetails loanDetails = loanManagementService.getHomeLoansByUser(loanNumber);
+		if(loanDetails==null)
+		{
+			throw new UsernameNotFoundException(" user not exist");
+			
+		}
+		return loanDetails;
+	}
+    
+	/* apply for loan*/
+	@PostMapping("/apply")
+	public int applyForHomeLoan(@RequestBody LoanManagementDetails homeLoan) {
+		System.out.println("User Data in Request is:  "+homeLoan.toString());
+		int loanNumber=loanManagementService.applyForHomeLoan( homeLoan);
+		return loanNumber;
+	
+		
+		 
+	}
+	/* register for loan*/
+	@PostMapping("/register")
+	public int registerForLoan(@RequestBody User user)
+	{
+		System.out.println("User Data in Request is:  "+user.toString());
+		 int userId=loanManagementService.registerForLoan(user);
+		return userId;
+		
+		
+	}
+	/*admin login */
+	@GetMapping("/userORAdmin/{userName}/{password}")
+	public List<LoanManagementDetails> getDetails(@PathVariable String userName,@PathVariable String password) throws UsernameNotFoundException
+	{
+		List<LoanManagementDetails> loanListObj=loanManagementService.getDetails(userName,password);
+		if(loanListObj==null)
+		{
+			throw new UsernameNotFoundException(" user not exist");
+		}
+		return loanListObj;
+		
+	}
+	/* pay montly emi*/
+	@PutMapping("/update/{monthlyPayment}/{loanNumber}")
+	public LoanManagementDetails updateMontlyPayment(@PathVariable Double monthlyPayment,@PathVariable int loanNumber)
+	{
+		LoanManagementDetails loanManagementDetails=loanManagementService.updateMontlyPayment(monthlyPayment, loanNumber);
+		return loanManagementDetails;
+	}
+	
+	/*
+	 * @GetMapping("/user/data") public ResponseEntity<String>
+	 * getUserData(Authentication authentication){ String userName =
+	 * authentication.getName(); User user =
+	 * loanManagementService.getUserDetails(userName); return
+	 * ResponseEntity.ok("User data for " + userName); }
+	 */
+	/* get all loan details*/
+	@GetMapping("/admin/allData")
+	public List<LoanManagementDetails> getAllLoanDetails() {
+		List<LoanManagementDetails> loanManagementDetails=loanManagementService.getAllLoanDetails();
+		return loanManagementDetails;
+	}
+	
+	/* loan tracker */
+	@GetMapping(value="/tracker/{userName}/{password}",consumes = MediaType.ALL_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<LoanTrackerResponse> getLoanTracker(@PathVariable String userName, @PathVariable
+			String password) {
+		LoanTrackerResponse loanManagementDetails=loanManagementService.getLoanTracker(userName,password);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		return new ResponseEntity<>(loanManagementDetails, headers, HttpStatus.OK);
+	}
+	
+	@GetMapping("/user/{userName}/{password}")
+	public LoanManagementDetails getUserDetails(@PathVariable String userName,@PathVariable String password)
+	{
+		LoanManagementDetails loanManagementDetails=loanManagementService.getUserDetails(userName,password);
+		return loanManagementDetails;
+	}
+	
+}

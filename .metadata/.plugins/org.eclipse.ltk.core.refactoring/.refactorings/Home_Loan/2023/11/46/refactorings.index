@@ -1,0 +1,28 @@
+1699882292757	Delete element
+1699883332504	Rename package 'Controller'
+1699883368193	Rename package 'Service'
+1699940205133	Rename package 'com.app.controller'
+1699940224807	Rename package 'com.app.entity'
+1699940253889	Rename package 'com.app.Loan'
+1699940269146	Rename package 'com.app.service'
+1699940282213	Rename package 'com.app.repository'
+1699944117544	Rename type 'Homecontroller'
+1699944152906	Rename type 'Repository'
+1699944178837	Rename type 'Homeservice'
+1699944876695	Rename type 'HomeloanApplicationcontrollerTest'
+1699945204641	Rename type 'HomeloanAppServiceTests'
+1699945217263	Rename type 'HomeloanAppRepositoryTests'
+1699945230167	Rename type 'UserTests'
+1699945243211	Rename type 'HomeAppTests'
+1699945253775	Rename type 'AdminTests'
+1699945268770	Rename type 'HomeloanApplicationcontrollerTests'
+1699945280540	Rename type 'HomeLoanApplicationTests'
+1699946317858	Rename type 'HomeloanAppservice'
+1699946555391	Rename type 'HomeloanAppService'
+1699947163724	Delete element
+1699950999200	Rename type 'HomeApp'
+1699951003676	Rename type 'HomeAppTest'
+1699968019687	Rename resource 'application.yml'
+1699987007801	Delete element
+1699987295150	Delete element
+1700034578450	Rename compilation unit 'userRepository.java'
